@@ -1,1 +1,598 @@
-netty.html
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/serif.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+  <section>
+    <h1>Netty</h1>
+    <h4>
+      <font face="georgia">List("<font color="#000000">Asynchronous</font>", "<font color="#000000">data</font>", "<font color="#000000">transfer</font>")<br />
+      </font>
+      <font face="georgia">::: List("<font color="#000000">practical</font>", "<font color="#000000">aspects</font>")</font>
+    </h4>
+    <div>
+      <br />
+    </div>
+    <div>
+      <br />
+    </div>
+    <div>
+      <br />
+    </div>
+    <p style="text-align: right;">
+      <font face="georgia">Victor Cherkassky &nbsp;<br />
+      </font>
+    </p>
+    <p style="text-align: right;">
+      <font face="georgia">"vcherkassky@gmail\.com"</font>
+    </p>
+  </section>
+  <section>
+    <section>
+      <h2>What is Netty</h2>
+      <div>
+        <br />
+      </div>
+      <div>
+        <ul>
+          <li>IO library</li>
+        </ul>
+        <div style="text-align: left;">
+          <br />
+        </div>
+      </div>
+      <h1>IO</h1>
+      <h2>cat Files &gt; Networking</h2>
+    </section>
+    <section>
+      <h2 style="">What is Netty</h2>
+      <div>
+        <br />
+      </div>
+      <div>
+        <ul>
+          <li>IO library</li>
+          <li>
+            <b>asynchronous</b>
+          </li>
+        </ul>
+        <div style="text-align: center;">
+          <br />
+        </div>
+        <div style="text-align: center;">
+          <font face="Lato">ChannelFuture future = channel.write(message)</font>
+          <br />
+        </div>
+        <div style="text-align: center;">
+          <font face="Lato">future.addListener(WRITE_COMPLETE_LISTENER)</font>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>What is Netty</h2>
+      <div>
+        <br />
+      </div>
+      <div>
+        <ul>
+          <li>IO library<br />
+          </li>
+          <li>asynchronous</li>
+          <li>
+            <b>non-blocking</b>
+          </li>
+        </ul>
+        <div style="text-align: left;">
+          <font face="Lato">&nbsp; &nbsp; &nbsp; /**</font>
+        </div>
+        <div style="text-align: left;">
+          <font face="Lato">&nbsp; &nbsp; &nbsp; &nbsp; *&nbsp;This method blocks until input data is available</font>
+        </div>
+        <div style="text-align: left;">
+          <font face="Lato">&nbsp; &nbsp; &nbsp; &nbsp; */</font>
+        </div>
+        <h2>
+          <font face="Lato" style="text-decoration: line-through;">InputStream.read()</font>
+        </h2>
+      </div>
+    </section>
+    <section>
+      <h2>What is Netty</h2>
+      <div>
+        <br />
+      </div>
+      <div>
+        <ul>
+          <li style="">IO library<br />
+          </li>
+          <li style="">asynchronous</li>
+          <li>non-blocking</li>
+          <li>
+            <b>multi-protocol</b>
+          </li>
+        </ul>
+        <div style="text-align: left;">
+          <br />
+        </div>
+        <h3>HTTP | WebSocket | Protobuf |&nbsp;Binary</h3>
+        <h2>TCP | UDP &nbsp;</h2>
+      </div>
+    </section>
+  </section>
+  <section>
+    <section>
+      <h2>blocking vs non-blocking</h2>
+      <div>
+        <br />
+      </div>
+      <div>blocking (OIO)</div>
+      <pre><code>InputStream is = new FileInputStream("input.bin");
+int byte = is.read(); <span style="color: rgb(255,255,153);">// current thread <b>waits</b> for result or error</span>
+</code></pre>
+      <div>
+        <br />
+      </div>
+      <div>non-blocking (NIO)</div>
+      <pre><code>while (true) { 
+  selector.select(); <span style="color: rgb(255,255,153);">// requesting events from multiple channels</span>
+  Iterator it = selector.selectedKeys().iterator();
+  while (it.hasNext()) {
+    SelectorKey key = (SelectionKey) it.next();
+    handleKey(key);
+    it.remove();
+  }
+}
+</code></pre>
+    </section>
+    <section>
+      <h2 style="">blocking vs non-blocking</h2>
+      <h3>Hardware blocking write<br /></h3>
+      <div>
+        <img src="https://lh5.googleusercontent.com/-6emD_QoH6Qw/ULt3-OklE5I/AAAAAAAAMyw/KcowLMThKBQ/s800/Netty%2520blocking%2520write_6xx.png" />
+        <br />
+      </div>
+    </section>
+    <section>
+      <h2 style="">blocking vs non-blocking</h2>
+      <h3>Hardware non-blocking write: DMA</h3>
+      <div>
+        <img src="https://lh5.googleusercontent.com/-uE84EXbNBkM/ULt3-BrNyQI/AAAAAAAAMy0/qSfmjOTgVpY/s800/Netty%2520non-blocking%2520write_6xx.png" />
+        <br />
+      </div>
+    </section>
+    <section>
+      <h2 style="">blocking vs non-blocking</h2>
+      <div>
+        <br />
+      </div>
+      <h2>OS</h2>
+      <div>
+        <ul>
+          <li>select()/poll() - traditional POSIX polling <b>O(n)</b>
+          </li>
+          <li>epoll() - event-based polling <b>O(1)</b>,&nbsp;Linux 2.5.44+&nbsp;</li>
+          <li>kqueue - FreeBSD, Mac OS X</li>
+          <li>I/O Completion Ports - Windows NT 3.5+, Solaris 10+</li>
+        </ul>
+      </div>
+    </section>
+    <section>
+      <h2 style="">blocking vs non-blocking</h2>
+      <div>
+        <br />
+      </div>
+      <h2>Java</h2>
+      <div>
+        <ul>
+          <li>SelectableChannel.register(selector) - blocking operation, registers an "interest" for IO events</li>
+          <li>Selector.select - non-blocking operation, checks for occurred events</li>
+        </ul>
+        <div style="text-align: left;">
+          <br />
+        </div>
+      </div>
+      <div style="text-align: left;">
+        <br />
+      </div>
+    </section>
+    <section>
+      <h2>blocking vs non-blocking</h2>
+      <div>
+        <br />
+      </div>
+      <div>
+        <br />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align: center"><h2>Java</h2></th>
+            <th style="text-align: center"><h2>OS</h2></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="vertical-align: middle">Channel.register &amp; Selector.select</td>
+            <td>
+              <ul>
+                <li>select() / poll() / kqueue
+                </li>
+                <li>I/O Completion Ports
+                </li>
+                <li>epoll() - Java 1.6+
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+  <section>
+    <section>
+      <h2>Thread model</h2>
+      <div>
+        <br />
+      </div>
+      <h1>Tomcat</h1>
+      <div>
+        <br />
+      </div>
+      <h2>1 request = 1 thread</h2>
+      <h2 class="fragment">fast for ~1000 clients</h2>
+      <h2 class="fragment">too much memory</h2>
+    </section>
+    <section>
+      <h2>Thread model</h2>
+      <div>
+        <br />
+      </div>
+      <h1>Node.js</h1>
+      <div>
+        <br />
+      </div>
+      <h2>all requests = 1 thread</h2>
+      <h2 class="fragment">super scalable</h2>
+      <h2 class="fragment">limited error handling</h2>
+    </section>
+    <section>
+      <h2>Thread model</h2>
+      <div>
+        <br />
+      </div>
+      <h1>Netty</h1>
+      <div>
+        <br />
+      </div>
+      <h2>many requests = 1 thread</h2>
+      <h2 class="fragment">flexible model</h2>
+    </section>
+  </section>
+  <section>
+    <section>
+      <h2>Netty web Server</h2>
+      <div>
+        <img src="https://lh3.googleusercontent.com/-vT2YXb8rwtY/UL5PlAXw6BI/AAAAAAAAM1Q/fz3Yu91bTxM/s800/Netty%2520web%2520server%2520concept_600.png" />
+        <br />
+      </div>
+    </section>
+    <section>
+      <h2>Netty web Client</h2>
+      <div>
+        <img src="https://lh3.googleusercontent.com/-gIoITK7Jcm4/UL5PlF9grKI/AAAAAAAAM1M/ovJ5FceQCgo/s800/Netty%2520web%2520client%2520concept_600.png" />
+        <br />
+      </div>
+    </section>
+    <section>
+      <h2>Channel Pipeline</h2>
+      <div>
+        <br />
+      </div>
+      <h3>
+        <img src="https://lh5.googleusercontent.com/-qBvYbMWbpRU/UL7unRCVZJI/AAAAAAAAM2A/MVNzxHTnfHw/s800/Netty%2520architecture_600.png" />
+        <br />
+      </h3>
+    </section>
+    <section>
+      <h2>All terms together</h2>
+      <div>
+        <br />
+      </div>
+      <h3>
+        <ul>
+          <li>Channel (socket read/write)<br />
+          </li>
+          <li class="fragment">
+            <font color="#006666">channel</font> Buffer (byte array)
+          </li>
+          <li class="fragment">
+            <font color="#006666">channel</font>&nbsp;Event (message)
+          </li>
+          <li class="fragment">
+            <font color="#006666">channel</font>&nbsp;Pipeline (message bus)
+          </li>
+          <li class="fragment">
+            <font color="#006666">channel</font>&nbsp;Handler (message handler)
+          </li>
+        </ul>
+        <div style="text-align: left;">
+          <br />
+        </div>
+        <ul class="fragment">
+          <li>Upstream Event (from socket)</li>
+          <li>Downstream Event (to socket)</li>
+        </ul>
+      </h3>
+    </section>
+  </section>
+  <section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Set up thread pools</h3>
+      <div>
+        <ul>
+          <li>boss pool for handling incoming connections<br />
+          </li>
+          <li>worker pool for processing IO</li>
+        </ul>
+        <br />&nbsp;
+      </div>
+      <pre><code>private final Executor bossPool = Executors.newCachedThreadPool();
+private final Executor workerPool = Executors.newCachedThreadPool();
+</code></pre>
+    </section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Provide ChannelFactory</h3>
+      <pre><code>private final ChannelFactory channelFactory = 
+    new NioServerSocketChannelFactory(bossPool, workerPool);
+</code></pre>
+    </section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Set up PipelineFactory</h3>
+      <pre><code>private final ChannelPipelineFactory pipelineFactory = 
+    new ChannelPipelineFactory() {
+  @Override
+  public ChannelPipeline getPipeline() throws Exception {
+  
+    ChannelPipeline p = Channels.pipeline();
+    p.addLast("httpServerCodec", new HttpServerCodec());    
+  
+    p.addLast("handler", new CustomRequestHandler(allChannels));    
+    return p;
+  }
+};
+</code></pre>
+    </section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Put all together with Bootstrap</h3>
+      <pre><code>private final ServerBootstrap bootstrap =&nbsp;new ServerBootstrap(channelFactory);
+
+   . . .
+
+bootstrap.setPipelineFactory(pipelineFactory);
+        
+<span style="color: rgb(255,255,153);">// Options for a parent channel - it accepts connections</span>
+bootstrap.setOption("localAddress", new InetSocketAddress(port));
+bootstrap.setOption("reuseAddress", true);
+
+<span style="color: rgb(255,255,153);">// Options for its children - they process IO</span>
+bootstrap.setOption("child.tcpNoDelay", true);
+bootstrap.setOption("child.keepAlive", false);
+</code></pre>
+    </section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Writing a custom handler</h3>
+      <pre><code>class CustomHandler extends SimpleChannelUpstreamHandler {
+   . . .
+  @Override
+  public void messageReceived(ChannelHandlerContext ctx,&nbsp;MessageEvent e) throws Exception {
+    HttpRequest req = (HttpRequest) e.getMessage();
+    <span style="color: rgb(255,255,153);">// produce response and write it to a channel</span>
+    HttpResponse res = new DefaultHttpResponse(HTTP_1_1, OK);
+    ChannelFuture future = Channels.write(ctx.getChannel(), res);
+    future.addListener(ChannelFutureListener.CLOSE);
+  }
+}
+</code></pre>
+    </section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Gather channels for future closing</h3>
+      <pre><code>private final ChannelGroup allChannels = new DefaultChannelGroup()
+    . . .
+<span style="color: rgb(255,255,153);">// again inside our custom handler</span>
+class CustomHandler extends SimpleChannelUpstreamHandler {
+    . . .
+    @Override
+  public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
+    Channel channel = e.getChannel();
+    allChannels.add(channel);
+  }
+}
+</code></pre>
+    </section>
+    <section>
+      <h2>Creating an HTTP server</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Release resources</h3>
+      <ul>
+        <li>close gathered channels</li>
+        <li>release external resources</li>
+      </ul>
+      <div>
+        <br />
+      </div>
+      <pre><code>allChannels.close().awaitUninterruptibly();
+bootstrap.releaseExternalResources();
+</code></pre>
+    </section>
+  </section>
+  <section>
+    <section>
+      <h2>TCPnodelay, TCPkeepalive</h2>
+      <div>
+        <br />
+      </div>
+      <h3>Remember that bootstrap code?</h3>
+      <div>
+        <br />
+      </div>
+      <pre><code>
+<span style="color: rgb(255,255,153);">// Options for its children - they process IO</span>
+bootstrap.setOption("child.tcpNoDelay", true);
+bootstrap.setOption("child.keepAlive", false);</code></pre>
+      <div>
+        <br />
+      </div>
+      <h3>What do these options mean?</h3>
+    </section>
+    <section>
+      <h2>TCP keepAlive</h2>
+      <div>
+        <br />
+      </div>
+      <div>
+        <br />
+      </div>
+      <h3>
+        <ul>
+          <li>prolongs each TCP connection<br />
+          </li>
+          <li>makes NAT router happy<br />
+          </li>
+        </ul>
+      </h3>
+    </section>
+    <section>
+      <h2>TCP noDelay</h2>
+      <h3>Nagle's algorithm</h3>
+      <div>
+        <br />
+      </div>
+      <h3>
+        <ul>
+          <li>glues up small TCP packets</li>
+          <li>tries to reduce bandwidth</li>
+          <li>increases latency</li>
+        </ul>
+      </h3>
+    </section>
+    <section>
+      <h2>TCPnodelay, TCPkeepalive</h2>
+      <div>
+        <br />
+      </div>
+      <h1>To use,&nbsp;</h1>
+      <h1>or not to use?</h1>
+    </section>
+    <section>
+      <h2>
+        <br />
+      </h2>
+      <h2>Don't ask,</h2>
+      <h1>measure!</h1>
+    </section>
+  </section>
+  <section>
+    <h2>
+      Thank you
+    </h2>
+    <div>
+      <br/>
+    </div>
+    <h3>Additional resources</h3>
+    <ul>
+      <li><a href="https://github.com/netty/netty">netty @ github</a></li>
+      <li><a href="http://seeallhearall.blogspot.co.uk/2012/05/netty-tutorial-part-1-introduction-to.html">introductory article</a></li>
+    </ul>
+  </section>
+</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
