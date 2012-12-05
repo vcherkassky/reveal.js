@@ -6,27 +6,21 @@
       </font>
       <font face="georgia">::: List("<font color="#000000">practical</font>", "<font color="#000000">aspects</font>")</font>
     </h4>
-    <p>
+    <div>
       <br />
-    </p>
-    <p style="text-align: center;">
-      <font face="times new roman">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</font>
-    </p>
-    <p style="text-align: center;">
-      <font face="times new roman">
+    </div>
+    <div>
       <br />
-      </font>
-    </p>
-    <p style="text-align: center;">
+    </div>
+    <div>
       <br />
-    </p>
+    </div>
     <p style="text-align: right;">
-      <span style="">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>
       <font face="georgia">Victor Cherkassky &nbsp;<br />
       </font>
     </p>
     <p style="text-align: right;">
-      <font face="georgia">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "vcherkassky@gmail\.com"</font>
+      <font face="georgia">"vcherkassky@gmail\.com"</font>
     </p>
   </section>
   <section>
@@ -518,5 +512,18 @@ bootstrap.setOption("child.keepAlive", false);</code></pre>
       <h2>Don't ask,</h2>
       <h1>measure!</h1>
     </section>
+  </section>
+  <section>
+    <h2>
+      Thank you
+    </h2>
+    <div>
+      <br/>
+    </div>
+    <h3>Additional resources</h3>
+    <ul>
+      <li><a href="https://github.com/netty/netty">netty @ github</a></li>
+      <li><a href="http://seeallhearall.blogspot.co.uk/2012/05/netty-tutorial-part-1-introduction-to.html">introductory article</a></li>
+    </ul>
   </section>
 </div>
